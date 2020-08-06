@@ -1,10 +1,17 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
+Route::get('/', function () {
     return response()->json([
-        'message' => 'Welcome!!!'
+        'message' => 'Welcome!!!',
     ]);
+});
+
+Route::group(['middleware' => 'auth:api'], function () {
+
+});
+
+Route::group(['middleware' => 'guest:api'], function () {
+    Route::post('register', 'Auth\RegisterController@register');
 });
