@@ -50,6 +50,12 @@ Generate the application key
 $ php artisan key:generate
 ```
 
+Generate JWT secret
+
+```
+$ php artisan jwt:secret
+```
+
 Create database and add its configuration
 
 ```
