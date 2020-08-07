@@ -8,10 +8,12 @@ Route::get('/', function () {
     ]);
 });
 
+// Users routes
 Route::group(['middleware' => 'auth:api'], function () {
-
+    Route::post('logout', 'Auth\LoginController@logout');
 });
 
+// Guest routes
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('register', 'Auth\RegisterController@register')->name('register');
     Route::post('verification/verify/{user}', 'Auth\VerificationController@verify')->name('verification.verify');

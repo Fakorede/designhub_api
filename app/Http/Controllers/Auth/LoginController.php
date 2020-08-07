@@ -61,7 +61,7 @@ class LoginController extends Controller
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $expiration
+            'expires_in' => $expiration,
         ]);
     }
 
@@ -81,13 +81,28 @@ class LoginController extends Controller
         if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
             return response()->json([
                 "errors" => [
-                    "verification" => "You need to verify your email address"
-                ]
+                    "verification" => "You need to verify your email address",
+                ],
             ]);
         }
 
-        throw  ValidationException::withMessages([
-            $this->username() => "Authentication failed"
+        throw ValidationException::withMessages([
+            $this->username() => "Invalid credentials",
+        ]);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        return response()->json([
+            "message" => "Logged out successfully!",
         ]);
     }
 }
