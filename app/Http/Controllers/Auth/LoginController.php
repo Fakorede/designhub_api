@@ -2,53 +2,92 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
 
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
+     * Attempt to log the user into the application.
      *
-     * @var string
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
      */
-    protected $redirectTo = '/home';
+    protected function attemptLogin(Request $request)
+    {
+        // attempt issue token based on login credentials
+        $token = $this->guard()->attempt($this->credentials($request));
+
+        if (!$token) {
+            return false;
+        }
+
+        // get authenticated user
+        $user = $this->guard()->user();
+
+        // check verification
+        if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
+            return false;
+        }
+
+        // set users' token
+        $this->guard()->setToken($token);
+
+        return true;
+    }
 
     /**
-     * Create a new controller instance.
+     * Send the response after the user was authenticated.
      *
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function __construct()
+    protected function sendLoginResponse(Request $request)
     {
-        $this->middleware('guest')->except('logout');
+        $this->clearLoginAttempts($request);
+
+        // get token from the auth guard
+        $token = (string) $this->guard()->getToken();
+
+        // extract the expiry date of the token
+        $expiration = $this->guard()->getPayload()->get('exp');
+
+        return response()->json([
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $expiration
+        ]);
     }
 
-    protected function authenticated(Request $request, $user)
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function sendFailedLoginResponse(Request $request)
     {
-        if ($request->isXmlHttpRequest()) {
-            return response(null, 204);
-        }
-    }
+        $user = $this->guard()->user();
 
-    protected function loggedOut(Request $request)
-    {
-        if ($request->isXmlHttpRequest()) {
-            return response(null, 204);
+        // check verification
+        if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
+            return response()->json([
+                "errors" => [
+                    "verification" => "You need to verify your email address"
+                ]
+            ]);
         }
+
+        throw  ValidationException::withMessages([
+            $this->username() => "Authentication failed"
+        ]);
     }
 }
