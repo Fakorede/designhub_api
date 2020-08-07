@@ -33,13 +33,7 @@ class VerificationController extends Controller
         }
 
         // check if already verified
-        if ($user->hasVerifiedEmail()) {
-            return response()->json([
-                "errors" => [
-                    "message" => "Email address already verified",
-                ],
-            ], 422);
-        }
+        $this->verifiedUser($user);
 
         $user->markEmailAsVerified();
         event(new Verified($user));
@@ -67,6 +61,17 @@ class VerificationController extends Controller
         }
 
         // check if already verified
+        $this->verifiedUser($user);
+
+        $user->sendEmailVerificationNotification();
+
+        return response()->json([
+            "status" => "Verification link resent",
+        ]);
+    }
+
+    private function verifiedUser($user)
+    {
         if ($user->hasVerifiedEmail()) {
             return response()->json([
                 "errors" => [
@@ -74,11 +79,5 @@ class VerificationController extends Controller
                 ],
             ], 422);
         }
-
-        $user->sendEmailVerificationNotification();
-
-        return response()->json([
-            "status" => "Verification link resent",
-        ]);
     }
 }
