@@ -2,11 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Pubic routes
 Route::get('/', function () {
     return response()->json([
         'message' => 'Welcome!!!',
     ]);
 });
+
+Route::get('me', 'User\MeController@getMe');
 
 // Users routes
 Route::group(['middleware' => 'auth:api'], function () {
