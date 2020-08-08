@@ -26,7 +26,7 @@ class UserResource extends JsonResource
             'formatted_address' => $this->formatted_address,
             'dates' => [
                 'created_at' => $this->created_at,
-                'formatted_created_at' => $this->created_at->diffForHumans,
+                'formatted_created_at' => $this->created_at->diffForHumans(),
             ],
         ];
     }
