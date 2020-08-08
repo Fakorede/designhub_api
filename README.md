@@ -92,4 +92,4 @@ $ php artisan serve
 ## Built With
 
 -   Laravel - The PHP framework for building the API endpoints needed for the application.
--   Vue - The Intuitive Vue Framework for building the interactive interfaces.
+-   Nuxt - The Intuitive Vue Framework for building the interactive interfaces.

@@ -50,6 +50,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function designs()
+    {
+        return $this->hasMany('App\Design');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
