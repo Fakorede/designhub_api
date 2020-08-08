@@ -11,14 +11,18 @@ Route::get('/', function () {
 
 Route::get('me', 'User\MeController@getMe');
 
-// Users routes
+// Auth Users Routes
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
     Route::put('settings/profile', 'User\SettingsController@updateProfile');
     Route::put('settings/password', 'User\SettingsController@updatePassword');
+
+    // Upload Designs
+    Route::post('designs', 'Designs\UploadController@upload');
+
 });
 
-// Guest routes
+// Guest Routes
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('register', 'Auth\RegisterController@register')->name('register');
     Route::post('verification/verify/{user}', 'Auth\VerificationController@verify')->name('verification.verify');
