@@ -77,6 +77,14 @@ MAIL_USERNAME=your_username
 MAIL_PASSWORD=your_password
 ```
 
+Create an Amazon account and add the ff:
+
+```
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_BUCKET=
+```
+
 Run database migrations
 
 ```
