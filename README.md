@@ -85,6 +85,12 @@ AWS_SECRET_ACCESS_KEY=
 AWS_BUCKET=
 ```
 
+Set QUEUE_CONNECTION to use `database`
+
+```
+QUEUE_CONNECTION=database
+```
+
 Run database migrations
 
 ```
