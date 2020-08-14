@@ -105,7 +105,7 @@ $ php artisan serve
 
 ## Built With
 
--   Laravel - The PHP framework for building the API endpoints needed for the application.
+-   [Laravel](https://laravel.com/) - The PHP framework for Web Artisans.
 <!-- -   Nuxt - The Intuitive Vue Framework for building the interactive interfaces. -->
 
 ### Other Packages Used
