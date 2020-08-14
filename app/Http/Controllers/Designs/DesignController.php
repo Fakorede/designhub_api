@@ -37,8 +37,6 @@ class DesignController extends Controller
         $design = Design::findOrFail($id);
         $this->authorize('delete', $design);
 
-        $design->delete();
-
         // delete associated files
         foreach (['thumbnail', 'large', 'original'] as $size) {
             // check if file exists
@@ -47,5 +45,9 @@ class DesignController extends Controller
                 Storage::disk($design->disk)->delete($path);
             }
         }
+
+        $design->delete();
+
+        return response()->json(['message' => 'Design successfully deleted!'], 200);
     }
 }
