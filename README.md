@@ -106,4 +106,11 @@ $ php artisan serve
 ## Built With
 
 -   Laravel - The PHP framework for building the API endpoints needed for the application.
--   Nuxt - The Intuitive Vue Framework for building the interactive interfaces.
+<!-- -   Nuxt - The Intuitive Vue Framework for building the interactive interfaces. -->
+
+### Other Packages Used
+
+- [JWT](https://github.com/tymondesigns/jwt-auth) - JSON Web Token Authentication for Laravel & Lumen.
+- [AWS S3 SDK](https://github.com/thephpleague/flysystem-aws-s3-v3) - Flysystem Adapter for AWS SDK V3.
+- [Eloquent Taggable](https://github.com/cviebrock/eloquent-taggable) - Easily add the ability to tag your Eloquent models in Laravel.
+- [Laravel MySql Spatial](https://github.com/grimzy/laravel-mysql-spatial) - MySQL Spatial Data Extension integration with Laravel.
