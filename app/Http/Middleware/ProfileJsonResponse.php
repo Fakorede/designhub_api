@@ -32,11 +32,38 @@ class ProfileJsonResponse
         //        '_debugbar' => app('debugbar')->getData()
         //    ]));
         // return only queries
-           $response->setData(array_merge($response->getData(true), [
-               '_debugbar' => Arr::only(app('debugbar')->getData(), 'queries')
-           ]));
+        //    $response->setData(array_merge($response->getData(true), [
+        //        '_debugbar' => Arr::only(app('debugbar')->getData(), 'queries')
+        //    ]));
+
+
+            $queries_data = $this->sqlFilter(app('debugbar')->getData());
+            $response->setData(array_merge($response->getData(true), [
+                '_debugbar' => [
+                    'total_queries' => count($queries_data),
+                    'queries' => $queries_data,
+                ]
+            ]));
+
         }
 
         return $response;
+    }
+
+     /**
+     * Get only sql and each duration
+     *
+     * @param $debugbar_data
+     * @return array
+     */
+    protected function sqlFilter($debugbar_data) {
+        $result = Arr::get($debugbar_data, 'queries.statements');
+
+        return array_map(function ($item) {
+            return [
+                'sql' => Arr::get($item, 'sql'),
+                'duration' => Arr::get($item, 'duration_str'),
+            ];
+        }, $result);
     }
 }
