@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    protected $comments;
-    protected $designs;
+    protected $comment;
+    protected $design;
 
-    public function __construct(CommentInterface $comments, DesignInterface $designs)
+    public function __construct(CommentInterface $comment, DesignInterface $design)
     {
-        $this->comments = $comments;
-        $this->designs = $designs;
+        $this->comment = $comment;
+        $this->design = $design;
     }
 
     public function store(Request $request, $designId)
@@ -25,12 +25,40 @@ class CommentController extends Controller
             'body' => ['required'],
         ]);
 
-        $comment = $this->designs->addComment($designId, [
+        $comment = $this->design->addComment($designId, [
             'body' => $request->body,
             'user_id' => auth()->id(),
         ]);
 
         return new CommentResource($comment);
 
+    }
+
+    public function update(Request $request, $id)
+    {
+        $comment = $this->comment->find($id);
+        $this->authorize('update', $comment);
+
+        $this->validate($request, [
+            'body' => ['required'],
+        ]);
+
+        $comment = $this->comment->update($id, [
+            'body' => $request->body
+        ]);
+
+        return new CommentResource($comment);
+    }
+
+    public function destroy($id)
+    {
+        $comment = $this->comment->find($id);
+        $this->authorize('delete', $comment);
+
+        $this->comment->delete($id);
+
+        return response()->json([
+            'message' => 'Comment successfully deleted!'
+        ], 200);
     }
 }
