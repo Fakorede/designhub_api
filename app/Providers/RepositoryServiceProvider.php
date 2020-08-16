@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Contracts\{UserInterface, DesignInterface};
-use App\Repositories\Eloquent\{UserRepository, DesignRepository};
+use App\Repositories\Contracts\{
+    UserInterface, DesignInterface, CommentInterface,
+};
+use App\Repositories\Eloquent\{
+    UserRepository, DesignRepository, CommentRepository,
+};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -27,5 +31,6 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserInterface::class, UserRepository::class);
         $this->app->bind(DesignInterface::class, DesignRepository::class);
+        $this->app->bind(CommentInterface::class, CommentRepository::class);
     }
 }
