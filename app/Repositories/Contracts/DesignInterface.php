@@ -5,5 +5,5 @@ namespace App\Repositories\Contracts;
 interface DesignInterface
 {
     public function applyTags($id, array $data);
-    public function allLive();
+    public function addComment($designId, array $data);
 }

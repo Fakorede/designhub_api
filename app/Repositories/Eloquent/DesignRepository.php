@@ -2,15 +2,30 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Comment;
+use App\Models\Design;
 use App\Repositories\Eloquent\BaseRepository;
-use App\Repositories\Contracts\CommentInterface;
+use App\Repositories\Contracts\DesignInterface;
 
-class CommentRepository extends BaseRepository implements CommentInterface
+class DesignRepository extends BaseRepository implements DesignInterface
 {
     public function model()
     {
-        return Comment::class;
+        return Design::class;
+    }
+
+    public function applyTags($id, array $data)
+    {
+        $design = $this->find($id);
+        $design->retag($data);
+    }
+
+    public function addComment($designId, array $data)
+    {
+        $design = $this->find($designId);
+
+        $comment = $design->comments()->create($data);
+
+        return $comment;
     }
 
 }

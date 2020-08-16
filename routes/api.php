@@ -16,6 +16,9 @@ Route::get('me', 'User\MeController@getMe');
 Route::get('designs', 'Designs\DesignController@index');
 Route::get('designs/{id}', 'Designs\DesignController@findDesign');
 
+// Comment
+Route::post('designs/{id}/comment', 'Designs\CommentController@store');
+
 // Get Users
 Route::get('users', 'User\UserController@index');
 
