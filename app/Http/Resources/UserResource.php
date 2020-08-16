@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'tagline' => $this->tagline,
             'about' => $this->about,
             'location' => $this->location,
+            'designs' => $this->designs,
             'available_to_hire' => $this->available_to_hire,
             'formatted_address' => $this->formatted_address,
             'dates' => [

@@ -38,12 +38,12 @@ class ProfileJsonResponse
 
 
             $queries_data = $this->sqlFilter(app('debugbar')->getData());
-            $response->setData(array_merge($response->getData(true), [
+            $response->setData(array_merge([
                 '_debugbar' => [
                     'total_queries' => count($queries_data),
                     'queries' => $queries_data,
                 ]
-            ]));
+            ], $response->getData(true)));
 
         }
 
