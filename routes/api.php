@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Likes & Unlikes
     Route::post('designs/{id}/like', 'Designs\DesignController@like');
+    Route::get('designs/{id}/liked', 'Designs\DesignController@checkIfUserHasLiked');
 
 });
 

@@ -39,4 +39,11 @@ class DesignRepository extends BaseRepository implements DesignInterface
         }
     }
 
+    public function isLikedByUser($id)
+    {
+        $design = $this->find($id);
+
+        return $design->isLikedByUser(auth()->id());
+    }
+
 }
