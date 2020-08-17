@@ -19,6 +19,9 @@ Route::get('designs/{id}', 'Designs\DesignController@findDesign');
 // Get Users
 Route::get('users', 'User\UserController@index');
 
+// Get Teams
+Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
+
 // Auth Users Routes
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
@@ -38,6 +41,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Likes & Unlikes
     Route::post('designs/{id}/like', 'Designs\DesignController@like');
     Route::get('designs/{id}/liked', 'Designs\DesignController@checkIfUserHasLiked');
+
+    // Teams
+    Route::post('teams', 'Teams\TeamsController@store');
+    Route::get('teams/{id}', 'Teams\TeamsController@findById');
+    Route::get('teams', 'Teams\TeamsController@index');
+    Route::get('users/teams', 'Teams\TeamsController@fetchUserTeams');
+    Route::put('teams/{id}', 'Teams\TeamsController@update');
+    Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
 
 });
 
