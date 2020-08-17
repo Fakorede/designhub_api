@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Teams;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeamResource;
 use App\Repositories\Contracts\TeamInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TeamsController extends Controller
 {
@@ -14,7 +16,7 @@ class TeamsController extends Controller
     {
         $this->teams = $teams;
     }
-    
+
     /**
      * Get list of all teams (ex for search)
      *
@@ -32,7 +34,17 @@ class TeamsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:80', 'unique:teams,name'],
+        ]);
 
+        $team = $this->teams->create([
+            'owner_id' => auth()->id(),
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+
+        return new TeamResource($team);
     }
 
     /**
