@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Notifications\VerifyEmail;
 use App\Notifications\ResetPassword;
+use App\Notifications\VerifyEmail;
 use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,6 +58,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 
     /**

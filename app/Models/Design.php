@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Likeable;
 use Cviebrock\EloquentTaggable\Taggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class Design extends Model
 {
 
-    use Taggable;
+    use Likeable, Taggable;
     /**
      * The attributes that are mass assignable.
      *

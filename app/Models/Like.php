@@ -2,23 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Likeable;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Like extends Model
 {
-    use Likeable;
-    
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'body', 'user_id',
+        'user_id',
     ];
 
-    public function commentable()
+    public function likeable()
     {
         return $this->morphTo();
     }
@@ -27,5 +24,4 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }
