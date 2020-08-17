@@ -33,8 +33,12 @@ class DesignResource extends JsonResource
                 'updated_at' => $this->updated_at,
                 'formatted_updated_at' => $this->updated_at->diffForHumans(),
             ],
-            'user' => new UserResource($this->user),
-            'comments' => CommentResource::collection($this->comments),
+            'user' => new UserResource(
+                $this->whenLoaded('user')
+            ),
+            'comments' => CommentResource::collection(
+                $this->whenLoaded('comments')
+            ),
         ];
     }
 }
