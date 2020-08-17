@@ -60,9 +60,27 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
-    public function likes()
+    // teams user belongs to
+    public function teams()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(Team::class)
+            ->withTimestamps();
+    }
+
+    // teams user created
+    public function ownedTeams()
+    {
+        return $this->teams()
+            ->where('owner_id', $this->id);
+    }
+
+    // check if user owns team
+    public function isOwnerOfTeam($team)
+    {
+        return (bool) $this->teams()
+            ->where('id', $team->id)
+            ->where('owner_id', $this->id)
+            ->count();
     }
 
     /**
