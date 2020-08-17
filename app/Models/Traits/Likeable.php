@@ -6,6 +6,14 @@ use App\Models\Like;
 
 trait Likeable
 {
+    // bootable trait
+    public static function bootLikeable()
+    {
+        static::deleting(function ($model) {
+            $model->deleteLikes();
+        });
+    }
+
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
@@ -17,20 +25,44 @@ trait Likeable
             return;
         }
 
-        // check if already liked model
+        // check if already liked
         if ($this->isLikedByUser(auth()->id())) {
             return;
         }
 
         $this->likes()->create([
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ]);
     }
 
-    protected function isLikedByUser($user_id)
+    public function unlike()
+    {
+        if (!auth()->check()) {
+            return;
+        }
+
+        // check if not already liked
+        if (!$this->isLikedByUser(auth()->id())) {
+            return;
+        }
+
+        $this->likes()
+            ->where('user_id', auth()->id())
+            ->delete();
+    }
+
+    public function isLikedByUser($user_id)
     {
         return (bool) $this->likes()
-                    ->where('user_id', $user_id)
-                    ->count();
+            ->where('user_id', $user_id)
+            ->count();
+    }
+
+    // delete likes when model is deleted
+    protected function deleteLikes()
+    {
+        if ($this->likes()->count()) {
+            $this->likes()->delete();
+        }
     }
 }

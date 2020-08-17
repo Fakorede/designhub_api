@@ -3,8 +3,8 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Design;
-use App\Repositories\Eloquent\BaseRepository;
 use App\Repositories\Contracts\DesignInterface;
+use App\Repositories\Eloquent\BaseRepository;
 
 class DesignRepository extends BaseRepository implements DesignInterface
 {
@@ -26,6 +26,17 @@ class DesignRepository extends BaseRepository implements DesignInterface
         $comment = $design->comments()->create($data);
 
         return $comment;
+    }
+
+    public function like($id)
+    {
+        $design = $this->find($id);
+
+        if ($design->isLikedByUser(auth()->id())) {
+            $design->unlike();
+        } else {
+            $design->like();
+        }
     }
 
 }

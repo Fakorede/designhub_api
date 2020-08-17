@@ -82,4 +82,13 @@ class DesignController extends Controller
 
         return response()->json(['message' => 'Design successfully deleted!'], 200);
     }
+
+    public function like($id)
+    {
+        $this->designs->like($id);
+
+        return response()->json([
+            'message' => 'Successful!',
+        ]);
+    }
 }
