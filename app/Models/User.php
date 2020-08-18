@@ -83,6 +83,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->count();
     }
 
+    // invitations sent to user
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class, 'recipient_email', 'email');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

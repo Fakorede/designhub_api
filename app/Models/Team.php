@@ -30,6 +30,11 @@ class Team extends Model
         return $this->hasMany(Design::class);
     }
 
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
     // check if team has user
     public function hasUser(User $user)
     {
@@ -38,17 +43,25 @@ class Team extends Model
             ->first() ? true : false;
     }
 
+    // check if team has pending invitation for email
+    public function hasPendingInvite($email)
+    {
+        return (bool) $this->invitations()
+                        ->where('recipient_email', $email)
+                        ->count();
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         // when team is created, add current user as team member
-        static::created(function($team) {
+        static::created(function ($team) {
             // auth()->user()->teams()->attach($team->id);
             $team->members()->attach(auth()->id());
         });
 
-        static::deleting(function($team) {
+        static::deleting(function ($team) {
             $team->members()->sync([]);
         });
     }

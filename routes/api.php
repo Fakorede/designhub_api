@@ -50,6 +50,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('teams/{id}', 'Teams\TeamsController@update');
     Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
 
+    // Invitations
+    Route::post('invitations/{teamId}', 'Teams\InvitationsController@invite');
+    Route::post('invitations/{id}/resend', 'Teams\InvitationsController@resend');
+    Route::post('invitations/{id}/respond', 'Teams\InvitationsController@respond');
+    Route::post('invitations/{id}', 'Teams\InvitationsController@destroy');
+
 });
 
 // Guest Routes
