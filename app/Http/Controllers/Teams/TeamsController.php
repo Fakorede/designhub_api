@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teams;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Repositories\Contracts\TeamInterface;
+use App\Repositories\Eloquent\Criteria\EagerLoad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -72,7 +73,8 @@ class TeamsController extends Controller
      */
     public function findById($id)
     {
-
+        $team = $this->teams->find($id);
+        return new TeamResource($team);
     }
 
     /**
@@ -80,7 +82,8 @@ class TeamsController extends Controller
      */
     public function fetchUserTeams()
     {
-
+        $teams = $this->teams->fetchUserTeams();
+        return TeamResource::collection($teams);
     }
 
     /**
