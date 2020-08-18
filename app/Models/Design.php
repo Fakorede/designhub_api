@@ -17,12 +17,17 @@ class Design extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'image', 'title', 'description', 'slug', 'close_to_comment', 'is_live', 'upload_successful', 'disk',
+        'user_id', 'team_id', 'image', 'title', 'description', 'slug', 'close_to_comment', 'is_live', 'upload_successful', 'disk',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 
     public function comments()

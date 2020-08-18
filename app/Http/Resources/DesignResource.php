@@ -40,6 +40,10 @@ class DesignResource extends JsonResource
             'comments' => CommentResource::collection(
                 $this->whenLoaded('comments')
             ),
+            'team' => $this->team ? [
+                'name' => $this->team->name,
+                'slug' => $this->team->slug,
+            ] : null,
         ];
     }
 }

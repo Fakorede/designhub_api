@@ -20,6 +20,7 @@ class TeamResource extends JsonResource
             'total_members' => $this->members->count(),
             'slug' => $this->slug,
             'owner' => new UserResource($this->owner),
+            'designs' => DesignResource::collection($this->designs),
             'members' => UserResource::collection($this->members),
         ];
     }
