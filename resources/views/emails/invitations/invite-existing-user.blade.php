@@ -3,10 +3,10 @@
 
 You have been invited to join team **{{ $invitation->team->name }}**.
 
-Since you are not yet signed up on the platform, please [Register for free]({{ $url }}), then accept or reject the invitation in your team management console.
+Since you are already registered on the platform, you can accept or reject the invitation in your [team management console]({{ $url }}).
 
 @component('mail::button', ['url' => $url])
-Register for free
+Go to Dashboard
 @endcomponent
 
 Thanks,<br>
