@@ -102,7 +102,12 @@ class TeamsController extends Controller
      */
     public function destroy($id)
     {
-        
+        $team = $this->teams->find($id);
+        $this->authorize('delete', $team);
+
+        $team->delete();
+
+        return response()->json(['message' => 'Deleted!'], 200);
     }
 
     public function removeFromTeam($teamId, $userId)
