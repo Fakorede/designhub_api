@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Teams;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
+use App\Repositories\Contracts\InvitationInterface;
 use App\Repositories\Contracts\TeamInterface;
-use App\Repositories\Eloquent\Criteria\EagerLoad;
+use App\Repositories\Contracts\UserInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class TeamsController extends Controller
 {
-    protected $teams;
+    protected $teams, $users, $invitations;
 
-    public function __construct(TeamInterface $teams)
+    public function __construct(TeamInterface $teams, UserInterface $users, InvitationInterface $invitations)
     {
         $this->teams = $teams;
+        $this->users = $users;
+        $this->invitations = $invitations;
     }
 
     /**
@@ -99,6 +102,30 @@ class TeamsController extends Controller
      */
     public function destroy($id)
     {
+        
+    }
 
+    public function removeFromTeam($teamId, $userId)
+    {
+        $team = $this->teams->find($teamId);
+        $user = $this->users->find($userId);
+
+        // check that user is not owner
+        if($user->isOwnerOfTeam($team)) {
+            return response()->json([
+                'message' => "Team Owner can't leave!"
+            ]);
+        }
+
+        // check if auth user is not owner or request user
+        if(!auth()->user()->isOwnerOfTeam($team) && auth()->id() !== $user->id) {
+            return response()->json([
+                'message' => 'You are not permitted to perform this action!'
+            ]);
+        }
+
+        $this->invitations->removeUserFromTeam($team, $userId);
+
+        return response()->json(['message' => 'Success!'], 200);
     }
 }

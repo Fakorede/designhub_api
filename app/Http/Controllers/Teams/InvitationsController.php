@@ -132,7 +132,7 @@ class InvitationsController extends Controller
         
         $invitation->delete();
 
-        return response()->json(['message' => 'Successful!'], 200);
+        return response()->json(['message' => 'Deleted!'], 200);
     }
 
     protected function createInvitation(bool $user_exists, Team $team, string $email)
