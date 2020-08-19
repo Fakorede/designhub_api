@@ -94,7 +94,8 @@ class TeamsController extends Controller
      */
     public function findBySlug($slug)
     {
-
+        $team = $this->teams->findWhereFirst('slug', $slug);
+        return new TeamResource($team);
     }
 
     /**
@@ -116,16 +117,16 @@ class TeamsController extends Controller
         $user = $this->users->find($userId);
 
         // check that user is not owner
-        if($user->isOwnerOfTeam($team)) {
+        if ($user->isOwnerOfTeam($team)) {
             return response()->json([
-                'message' => "Team Owner can't leave!"
+                'message' => "Team Owner can't leave!",
             ]);
         }
 
         // check if auth user is not owner or request user
-        if(!auth()->user()->isOwnerOfTeam($team) && auth()->id() !== $user->id) {
+        if (!auth()->user()->isOwnerOfTeam($team) && auth()->id() !== $user->id) {
             return response()->json([
-                'message' => 'You are not permitted to perform this action!'
+                'message' => 'You are not permitted to perform this action!',
             ]);
         }
 

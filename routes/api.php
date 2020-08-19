@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Teams
     Route::post('teams', 'Teams\TeamsController@store');
+    Route::get('teams/{slug}', 'Teams\TeamsController@findBySlug');
     Route::get('teams/{id}', 'Teams\TeamsController@findById');
     Route::get('teams', 'Teams\TeamsController@index');
     Route::get('user/teams', 'Teams\TeamsController@fetchUserTeams');
