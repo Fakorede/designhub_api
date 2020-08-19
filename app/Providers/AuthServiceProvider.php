@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use App\Models\{
-    Design, Comment, Team,
+    Design, Comment, Team, Invitation,
 };
 use App\Policies\{
-    DesignPolicy, CommentPolicy, TeamPolicy,
+    DesignPolicy, CommentPolicy, TeamPolicy, InvitationPolicy,
 };
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -23,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         Design::class => DesignPolicy::class,
         Comment::class => CommentPolicy::class,
         Team::class => TeamPolicy::class,
+        Invitation::class => InvitationPolicy::class,
     ];
 
     /**
